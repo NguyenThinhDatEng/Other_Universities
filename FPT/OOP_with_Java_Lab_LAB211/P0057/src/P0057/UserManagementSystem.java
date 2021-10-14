@@ -29,6 +29,15 @@ public class UserManagementSystem {
 			}
 		System.out.println("Invalid user name or password");
 	}
+	
+	public boolean find(String username)
+	{
+		for (Account tmpAcc : repo)
+			if (username.equals(tmpAcc.getusername())) {
+				return true;
+			}
+		return false;
+	}
 
 	public Account createAcc() {
 		Account account = new Account(inputUsername(), inputPassword());
@@ -44,15 +53,23 @@ public class UserManagementSystem {
 	public String inputUsername() {
 		String username = "";
 		boolean re_enter = false;
-
+		boolean sameAccount = false;
+		
 		do {
-			if (re_enter)
-				System.out.println("You must enter least at 5 characters and no spaces");
-			System.out.print("Enter Username: ");
-			username = scanner.nextLine();
-			re_enter = true;
-		} while (!ps.userName_Validation(username));
-
+			if (sameAccount)
+				System.out.println("username is existed!");
+			
+			do {
+				if (re_enter)
+					System.out.println("You must enter least at 5 characters and no spaces");
+				System.out.print("Enter Username: ");
+				username = scanner.nextLine();
+				re_enter = true;
+			} while (!ps.userName_Validation(username));
+			
+			re_enter = false;
+			sameAccount = true;
+		} while (find(username));
 		return username;
 	}
 
